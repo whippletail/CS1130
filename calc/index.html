@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Converter</title>
+  <link rel="stylesheet" href="calc.css">
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo">Audrey Zarina</a>
+
+        <i class='bx bx-menu' id="menu-icon"></i>
+
+        <nav class="navbar">
+            <a href="#home" class="active">Home</a>
+            <a href="#assignments">Assignments</a>
+            <a href="#about">About Me</a>
+            <a href="#contact">Contact Me</a>
+
+        </nav>
+    </header>
+
+    <div class="video-container">
+        <video autoplay muted loop id="video-bg">
+          <source src="components/video.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    
+      <div class="content">
+
+  <h2>Unit Converter</h2>
+
+  <label for="conversionType">Select Conversion Type:</label>
+  <select id="conversionType">
+    <option value="fToC">Fahrenheit to Celsius</option>
+    <option value="cToF">Celsius to Fahrenheit</option>
+    <option value="mToF">Meters to Feet</option>
+    <option value="fToM">Feet to Meters</option>
+  </select>
+
+  <br><br>
+
+  <label for="inputValue">Enter Value:</label>
+  <input type="number" id="inputValue">
+
+  <br><br>
+
+  <button onclick="convert()">Convert</button>
+  <button onclick="clearForm()">Clear</button>
+
+  <br><br>
+
+  <div id="result"></div>
+
+  <script>
+    function convert() {
+      const conversionType = document.getElementById('conversionType').value;
+      const inputValue = parseFloat(document.getElementById('inputValue').value);
+
+      let result;
+
+      switch (conversionType) {
+        case 'fToC':
+          result = (inputValue - 32) * 5/9;
+          document.getElementById('result').innerHTML = `${inputValue}&degF  is  ${result.toFixed(2)}&degC`;
+          break;
+
+        case 'cToF':
+          result = (inputValue * 9/5) + 32;
+          document.getElementById('result').innerHTML = `${inputValue}&degC  is  ${result.toFixed(2)}&degF`;
+          break;
+
+        case 'mToF':
+          result = inputValue * 3.28084;
+          document.getElementById('result').innerHTML = `${inputValue} Meters is ${result.toFixed(2)} Feet.`;
+          break;
+
+        case 'fToM':
+          result = inputValue / 3.28084;
+          document.getElementById('result').innerHTML = `${inputValue} Feet is ${result.toFixed(2)} Meters.`;
+          break;
+
+        default:
+          document.getElementById('result').innerHTML = 'Invalid Conversion Type.';
+      }
+    }
+
+    function clearForm() {
+      document.getElementById('conversionType').value = 'fToC';
+      document.getElementById('inputValue').value = '';
+      document.getElementById('result').innerHTML = '';
+    }
+  </script>
+
+</body>
+</html>

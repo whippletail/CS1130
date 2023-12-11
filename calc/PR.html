@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Payroll</title>
+    <link rel="stylesheet" href="PR.css">
+</head>
+
+<body>
+
+<h2>Payroll Management</h2>
+
+<form id="payrollForm">
+  <label for="employeeName">Employee Name:</label>
+  <input type="text" id="employeeName" required><br>
+
+  <label for="daysWorked" >Days Worked:</label>
+  <input type="number" id="daysWorked" required><br>
+
+  <label for="dailyRate">Daily Rate:</label>
+  <input type="number" id="dailyRate" required><br>
+
+  <label for="deductionAmount">Deduction Amount:</label>
+  <input type="number" id="deductionAmount" required><br>
+
+  <button type="button" id="addEmployee">Add Employee</button>
+</form>
+
+<div id="payrollTable"></div>
+
+<form id="deleteForm">
+  <label for="lineNumber">Enter Line Number to Delete:</label>
+  <input type="number" id="lineNumber">
+  <button type="button" id="deleteEmployee">Delete Employee</button>
+</form>
+
+<a href="index.html">Back to Homepage</a> 
+
+<div id="overlay"></div>
+<div id="confirmationModal">
+  <p>Are you sure you want to delete this employee?</p>
+  <button id="confirmDelete">Yes</button>
+  <button id="cancelDelete">No</button>
+</div>
+
+<script>
+
+  let payrollList = [];
+
+  function calculatePay(daysWorked, dailyRate, deductionAmount) {
+    const grossPay = daysWorked * dailyRate;
+    const netPay = grossPay - deductionAmount;
+    return { grossPay, netPay };
+  }
+
+  function displayPayrollTable() {
+    const tableDiv = document.getElementById('payrollTable');
+    tableDiv.innerHTML = "<h3>Payroll List</h3>";
+    const table = document.createElement('table');
+
+    const headerRow = table.insertRow(0);
+    headerRow.innerHTML = "<th>No.</th><th>Employee Name</th><th>Days Worked</th><th>Daily Rate</th><th>Gross Pay</th><th>Deduction Amount</th><th>Net Pay</th>";
+
+    payrollList.forEach((employee, index) => {
+      const { daysWorked, dailyRate, deductionAmount } = employee;
+      const { grossPay, netPay } = calculatePay(daysWorked, dailyRate, deductionAmount);
+
+      const row = table.insertRow(index + 1);
+      row.innerHTML = `<td>${index + 1}</td><td>${employee.name}</td>
+      <td>${daysWorked}</td><td>${dailyRate}</td><td>${grossPay}</td>
+      <td>${deductionAmount}</td><td>${netPay}</td>`;
+    });
+
+    tableDiv.appendChild(table);
+  }
+
+  function openModal() {
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('confirmationModal').style.display = 'block';
+  }
+
+  function closeModal() {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('confirmationModal').style.display = 'none';
+  }
+
+  document.getElementById("addEmployee").addEventListener("click",
+    function addEmployee() {
+      const name = document.getElementById('employeeName').value;
+      const daysWorked = parseInt(document.getElementById('daysWorked').value);
+      const dailyRate = parseInt(document.getElementById('dailyRate').value);
+      const deductionAmount = parseInt(document.getElementById('deductionAmount').value);
+
+      payrollList.push({ name, daysWorked, dailyRate, deductionAmount });
+      displayPayrollTable();
+    });
+
+  document.getElementById("deleteEmployee").addEventListener("click",
+    function () {
+      openModal();
+    });
+
+  document.getElementById("confirmDelete").addEventListener("click",
+    function () {
+      const lineNumber = parseInt(document.getElementById('lineNumber').value);
+
+      if (lineNumber >= 1 && lineNumber <= payrollList.length) {
+        payrollList.splice(lineNumber - 1, 1);
+        displayPayrollTable();
+        closeModal();
+      } else {
+        alert("Invalid line number.");
+        closeModal();
+      }
+    });
+
+  document.getElementById("cancelDelete").addEventListener("click",
+    function () {
+      closeModal();
+    });
+</script>
+</body>
+</html>
