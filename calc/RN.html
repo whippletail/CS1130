@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Factorial, Sum, Average</title>
+  <link rel="stylesheet" href="taxindex.css" />
+  
+  <div class="video-container">
+    <video autoplay muted loop id="video-bg">
+      <source src="components/video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <style>
+      .calculation-section {
+        margin-bottom: 20px; /* Adds space between sections */
+      }
+      body {
+      /* Gradient background */
+      background: linear-gradient(to right, #23112d, #3e025c);
+      /* Ensuring a full coverage of the background */
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+  .container {
+      width: 80%; /* Adjust the width as needed */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    content {
+        text-align: center;
+
+    /* Target elements within the container */
+    .container .calculation-section,
+    .container button,
+    .container input,
+    .container form,
+    .container p[id^="result"] {
+      text-align: center;
+      width: 100%;
+    }
+      label[for="employeeName"],
+      label[for="daysWorked"],
+      label[for="dailyRate"],
+      label[for="deductionAmount"],
+      #employeeName,
+      #daysWorked,
+      #dailyRate,
+      #deductionAmount {
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Adjust shadow properties as needed */
+      }
+
+      .header h2 {
+      visibility: hidden;
+    }
+      /* Style for the "Add Employee" button */
+      #addEmployee {
+        background-color: #570276;
+      }
+
+      #deleteEmployee {
+        background-color: #570276;
+      }
+      /* Style for the delete button in the modal */
+      #confirmationModal button {
+        padding: 8px 16px;
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      
+      
+      button#calculateFactorial,
+      button#calculateSum,
+      button#calculateAverage,
+      button#clearButton {
+        font-weight: bold;
+        color: white;
+      }
+      button {
+        color: white;
+        cursor: pointer;
+        background-color: transparent;
+        border: 2px solid white;
+        padding: 5px 10px;
+        font-size: 16px;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      /* Hover effect for the button */
+      button:hover {
+        background-color: white !important;
+        color: black !important;
+      }
+
+      .input-group {
+        flex: 0 0 48%; /* Adjust the width of input groups */
+      }
+
+      /* Align content to the center */
+      .content {
+        text-align: left;
+      }
+
+      input[type="number"]::placeholder {
+        color: transparent;
+      }
+
+      /* Table styles */
+      table {
+        width: auto; /* Allowing the table to expand based on content */
+        border-collapse: collapse;
+        margin-top: 20px;
+        max-height: 100px; /* Adjust the maximum height as needed */
+        overflow-y: auto; /* Enable vertical scrolling */
+        table-layout: fixed; /* For consistent column widths */
+        background-color: black; /* Set the background color to black */
+        color: white; /* Set text color to contrast with the black background */
+      }
+
+      table th,
+      table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        word-break: break-all;
+        white-space: normal; /* Allow text to wrap */
+      }
+
+      table th {
+        background-color: #570276;
+      }
+      
+      p[id^="result"] {
+    border: 2px solid white;
+    padding: 10px;
+    display: none;
+    max-width: 300px; /* Initially hide the result paragraphs */
+  }
+
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <a href="#" class="logo">Audrey Zarina</a>
+      <i class="bx bx-menu" id="menu-icon"></i>
+      <nav class="navbar">
+        <a href="#home" class="active">Home</a>
+        <a href="#assignments">Assignments</a>
+        <a href="#about">About Me</a>
+        <a href="#contact">Contact Me</a>
+      </nav>
+    </header>
+    
+
+    <header>
+      <br/> <br/>
+      <h2 class="reveal-header">Factorial, Sum, Average of Natural Numbers</h2>
+      <div class="content">
+        <div class="calculation-section">
+          <form>
+        <label for="factorial">Factorial:</label>
+        <input type="number" id="factorial" placeholder="Enter a digit" />
+        <button type="button" id="calculateFactorial">
+          Calculate Factorial
+        </button>
+        <p id="resultFactorial"></p>
+      </form>
+    </div>
+
+    <div class="calculation-section">      <form>
+        <label for="input1">Sum:</label>
+        <input type="number" id="input1" placeholder="Enter a digit" />
+        <button type="button" id="calculateSum">Calculate Sum</button>
+        <p id="resultSum"></p>
+      </form>
+    </div>
+
+    <div class="calculation-section">
+      <form>
+        <label for="average">Average:</label>
+        <input type="number" id="average" placeholder="Enter a digit" />
+        <button type="button" id="calculateAverage">Calculate Average</button>
+        <p id="resultAverage"></p>
+      </form>
+    </div>
+
+    <button type="button" id="clearButton">Clear</button>
+
+    <script>
+       document
+    .getElementById("calculateFactorial")
+    .addEventListener("click", function calculateFactorial() {
+      var total = 1;
+      var i = 1;
+      var n = document.getElementById("factorial").value;
+      if (n < 0) alert("Cannot perform factorial on negative numbers.");
+      else {
+        while (i <= n) {
+          total *= i;
+          i++;
+        }
+        var result = "Factorial of " + n + " is " + total;
+        document.getElementById("resultFactorial").innerHTML = result;
+        document.getElementById("resultFactorial").style.display = "block"; // Show the result paragraph
+      }
+    });
+
+  document
+    .getElementById("calculateSum")
+    .addEventListener("click", function calculateSum() {
+      var n = document.getElementById("input1").value;
+      var i = n;
+      var total = 0;
+      if (n < 0) {
+        alert("Please enter a positive integer");
+      } else {
+        do {
+          total += parseInt(i);
+          i--;
+        } while (i >= 1);
+      }
+      var result = "The sum is " + total;
+      document.getElementById("resultSum").innerHTML = result;
+      document.getElementById("resultSum").style.display = "block"; // Show the result paragraph
+    });
+
+  document
+    .getElementById("calculateAverage")
+    .addEventListener("click", function calculateAverage() {
+      var x = document.getElementById("average").value;
+      var i = 1,
+        total = 0;
+      for (i = 1; i <= x; i++) {
+        total += i;
+      }
+      var average = total / (i - 1);
+      var result = "The average is " + average;
+      document.getElementById("resultAverage").innerHTML = result;
+      document.getElementById("resultAverage").style.display = "block"; // Show the result paragraph
+    });
+
+  document
+    .getElementById("clearButton")
+    .addEventListener("click", function clearFields() {
+      // Clear all input fields and result paragraphs
+      document.getElementById("factorial").value = "";
+      document.getElementById("resultFactorial").innerHTML = "";
+      document.getElementById("resultFactorial").style.display = "none"; // Hide the result paragraph
+
+      document.getElementById("input1").value = "";
+      document.getElementById("resultSum").innerHTML = "";
+      document.getElementById("resultSum").style.display = "none"; // Hide the result paragraph
+
+      document.getElementById("average").value = "";
+      document.getElementById("resultAverage").innerHTML = "";
+      document.getElementById("resultAverage").style.display = "none"; // Hide the result paragraph
+    });
+        
+    </script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script>
+      // Initialize ScrollReveal
+      ScrollReveal().reveal('.calculation-section, button, .reveal-header', {
+        delay: 300,
+        distance: '50px',
+        origin: 'bottom',
+        easing: 'ease-in-out',
+        interval: 150
+      });
+    </script>
+  </body>
+  </html>

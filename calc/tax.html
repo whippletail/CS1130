@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unit Converter</title>
+    <link rel="stylesheet" href="taxindex.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+    />
+
+    <div class="video-container">
+    <video autoplay muted loop id="video-bg">
+      <source src="components/video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+    <header class="header">
+      <a href="#" class="logo">Audrey Zarina</a>
+      <i class="bx bx-menu" id="menu-icon"></i>
+      <nav class="navbar">
+        <a href="#home" class="active">Home</a>
+        <a href="#assignments">Assignments</a>
+        <a href="#about">About Me</a>
+        <a href="#contact">Contact Me</a>
+      </nav>
+      <style>
+        body {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          /* Gradient background */
+          background: linear-gradient(to right, #23112d, #3e025c);
+          /* Ensuring a full coverage of the background */
+          margin: 0;
+          padding: 0;
+          height: 100vh;
+          overflow: hidden;
+          color: white;
+        }
+
+        /* Styling for the table */
+        table {
+          color: white;
+          border-collapse: collapse;
+          margin-top: 20px;
+        }
+
+        th,
+        td {
+          border: 2px solid white;
+          padding: 10px;
+        }
+
+        button {
+          color: white;
+          cursor: pointer; /* Changing cursor to pointer to indicate clickability */
+          background-color: transparent;
+          border: 2px solid white;
+          padding: 5px 10px;
+          font-size: 16px;
+          transition: background-color 0.3s, color 0.3s;
+        }
+
+        button:hover {
+          background-color: white;
+          color: black;
+        }
+
+        output {
+          border: 2px solid white;
+          padding: 10px;
+          display: inline-block;
+          max-width: 200px;
+        }
+      </style>
+    </header>
+  </head>
+  <body>
+    <label for="salary" data-aos="fade-right" data-aos-duration="800">Input Salary: </label>
+    <input type="number" name="salary" id="salary" data-aos="fade-left" data-aos-duration="800" />
+
+    <button onclick="updateoutput()" data-aos="fade-up" data-aos-duration="1000"><b>Enter</b></button>
+
+    <br />
+    <b>Income Tax: </b> <output id="output" data-aos="fade-up" data-aos-duration="1000">₱0.00</output>
+
+    <table style="width: fit-content; height: fit-content; padding: 0%" data-aos="zoom-in" data-aos-duration="1000">
+      <tr>
+        <th style="border: 2px solid white">Amount of Taxable Income</th>
+        <th style="border: 2px solid white">Basic Tax + Rate</th>
+      </tr>
+      <tr>
+        <td style="text-align: center; border: 1px solid white">
+          &lt P250,000
+        </td>
+        <td style="text-align: center; border: 1px solid white">0%</td>
+      </tr>
+      <tr>
+        <td style="text-align: center; border: 1px solid white">
+          P250,000 to P400,000
+        </td>
+        <td style="text-align: center; border: 1px solid white">
+          20% of the excess over P250,000
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: center; border: 1px solid white">
+          P400,000 to P800,000
+        </td>
+        <td style="text-align: center; border: 1px solid white">
+          P30,000 + 25% of the excess over P400,000
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: center; border: 1px solid white">
+          P800,000 to P2,000,000
+        </td>
+        <td style="text-align: center; border: 1px solid white">
+          P130,000 + 30% of the excess over P800,000
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: center; border: 1px solid white">
+          P2,000,000 to P8,000,000
+        </td>
+        <td style="text-align: center; border: 1px solid white">
+          P490,000 + 32% of the excess over P2,000,000
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: center; border: 1px solid white">
+          &gt P8,000,000
+        </td>
+        <td style="text-align: center; border: 1px solid white">
+          P2,410,000 + 35% of the excess over P8,000,000
+        </td>
+      </tr>
+    </table>
+
+    <br /><br />
+
+    <script>
+      function updateoutput() {
+        var tax = incometaxcalculator();
+        document.getElementById("output").textContent =
+          "₱" + parseFloat(tax).toFixed(2);
+      }
+
+      function incometaxcalculator() {
+        var salary = document.getElementById("salary").value;
+        var tax;
+        if (salary < 250000) tax = 0.0;
+        else if (salary >= 250000 && salary < 400000)
+          tax = (salary - 250000) * 0.2;
+        else if (salary >= 400000 && salary < 800000)
+          tax = 30000 + (salary - 400000) * 0.25;
+        else if (salary >= 800000 && salary < 2000000)
+          tax = 130000 + (salary - 800000) * 0.3;
+        else if (salary >= 2000000 && salary < 8000000)
+          tax = 490000 + (salary - 2000000) * 0.32;
+        else if (salary >= 8000000) tax = 2410000 + (salary - 8000000) * 0.35;
+        return tax;
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+  </body>
+</html>

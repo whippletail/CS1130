@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unit Converter</title>
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+    />
+    
+    <div class="video-container">
+    <video autoplay muted loop id="video-bg">
+      <source src="components/video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+    <style>
+      .scroll-reveal-top {
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 1s ease-out, transform 1s ease-out; /* Adjust transition duration */
+      }
+
+      .scroll-reveal-bottom {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 1s ease-out, transform 1s ease-out;
+      }
+      .added-employee {
+        background-color: white;
+        color: black;
+      }
+      body {
+        /* Gradient background */
+        background: linear-gradient(to right, #23112d, #3e025c);
+        /* Ensuring a full coverage of the background */
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        overflow-y: auto;
+      }
+      label[for="employeeName"],
+      label[for="daysWorked"],
+      label[for="dailyRate"],
+      label[for="deductionAmount"],
+      #employeeName,
+      #daysWorked,
+      #dailyRate,
+      #deductionAmount {
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Adjust shadow properties as needed */
+      }
+
+      /* Style for the "Add Employee" button */
+      #addEmployee {
+        background-color: #570276;
+      }
+
+      #deleteEmployee {
+        background-color: #570276;
+      }
+      /* Style for the delete button in the modal */
+      #confirmationModal button {
+        padding: 8px 16px;
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      .input-group {
+        flex: 0 0 48%; /* Adjust the width of input groups */
+      }
+
+      /* Align content to the center */
+      .content {
+        text-align: left;
+        max-width: 100%;
+        padding: 0;
+      }
+
+      /* Table styles */
+      table {
+        width: auto; /* Allowing the table to expand based on content */
+        border-collapse: collapse;
+        margin-top: 20px;
+        max-height: 100px; /* Adjust the maximum height as needed */
+        overflow-y: auto; /* Enable vertical scrolling */
+        table-layout: fixed; /* For consistent column widths */
+        background-color: white; /* Set the background color to black */
+        color: white; /* Set text color to contrast with the black background */
+      }
+
+      table th,
+      table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        word-break: break-all;
+        white-space: normal; /* Allow text to wrap */
+      }
+
+      table th {
+        background-color: #570276;
+      }
+      button {
+        color: white;
+        cursor: pointer;
+        background-color: transparent;
+        border: 2px solid white;
+        padding: 5px 10px;
+        font-size: 16px;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      /* Hover effect for the button */
+      button:hover {
+        background-color: white !important;
+        color: black !important;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <!-- Header content -->
+      <a href="#" class="logo">Audrey Zarina</a>
+      <i class="bx bx-menu" id="menu-icon"></i>
+      <nav class="navbar">
+        <a href="#home" class="active">Home</a>
+        <a href="#assignments">Assignments</a>
+        <a href="#about">About Me</a>
+        <a href="#contact">Contact Me</a>
+      </nav>
+    </header>
+
+    <div class="video-container">
+      <!-- Video content -->
+    </div>
+    <div class="home-content">
+      <div class="input-container" data-aos="fade-up">
+        <div class="input-group">
+          <form id="payrollForm">
+            <label for="employeeName">Employee Name:</label>
+            <input type="text" id="employeeName" required />
+            <label for="daysWorked">Days Worked:</label>
+            <input type="number" id="daysWorked" required />
+            <label for="dailyRate">Daily Rate:</label>
+            <input type="number" id="dailyRate" required />
+            <label for="deductionAmount">Deduction Amount:</label>
+            <input type="number" id="deductionAmount" required />
+            <br />
+            <button type="button" id="addEmployee"><b>Add Employee</b></button>
+          </form>
+        </div>
+        <table id="payrollTable">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Employee Name</th>
+              <th>Days Worked</th>
+              <th>Daily Rate</th>
+              <th>Gross Pay</th>
+              <th>Deduction Amount</th>
+              <th>Net Pay</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <form id="deleteForm" class="scroll-reveal" data-aos="fade-up">
+        <label for="lineNumber">Enter Line Number to Delete:</label>
+        <input type="number" id="lineNumber" />
+        <button type="button" id="deleteEmployee">
+          <b>Delete Employee</b>
+        </button>
+      </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        AOS.init({
+          duration: 1000,
+          once: true,
+          easing: "ease-out",
+        });
+        const payrollForm = document.getElementById("payrollForm");
+        const payrollTableBody = document.querySelector("#payrollTable tbody");
+        const deleteEmployeeBtn = document.getElementById("deleteEmployee");
+        let rowCount = 1;
+
+        document
+          .getElementById("addEmployee")
+          .addEventListener("click", function () {
+            const employeeName = document.getElementById("employeeName").value;
+            const daysWorked = parseInt(
+              document.getElementById("daysWorked").value
+            );
+            const dailyRate = parseInt(
+              document.getElementById("dailyRate").value
+            );
+            const deductionAmount = parseInt(
+              document.getElementById("deductionAmount").value
+            );
+
+            const grossPay = daysWorked * dailyRate;
+            const netPay = grossPay - deductionAmount;
+
+            const newRow = payrollTableBody.insertRow();
+            const cell0 = newRow.insertCell(0);
+            const cell1 = newRow.insertCell(1);
+            const cell2 = newRow.insertCell(2);
+            const cell3 = newRow.insertCell(3);
+            const cell4 = newRow.insertCell(4);
+            const cell5 = newRow.insertCell(5);
+            const cell6 = newRow.insertCell(6);
+
+            cell0.textContent = rowCount++;
+            cell1.textContent = employeeName;
+            cell2.textContent = daysWorked;
+            cell3.textContent = dailyRate;
+            cell4.textContent = grossPay;
+            cell5.textContent = deductionAmount;
+            cell6.textContent = netPay;
+
+            document.getElementById("employeeName").value = "";
+            document.getElementById("daysWorked").value = "";
+            document.getElementById("dailyRate").value = "";
+            document.getElementById("deductionAmount").value = "";
+            newRow.classList.add("added-employee");
+            const scrollRevealElements =
+              document.querySelectorAll(".scroll-reveal");
+            scrollRevealElements.forEach(function (element) {
+              element.classList.add("scroll-reveal");
+            });
+          });
+
+        deleteEmployeeBtn.addEventListener("click", function () {
+          const lineNumber = document.getElementById("lineNumber").value;
+          payrollTableBody.deleteRow(lineNumber - 1);
+          rowCount--;
+        });
+      });
+    </script>
+  </body>
+</html>
