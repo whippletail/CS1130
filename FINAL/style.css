@@ -175,18 +175,18 @@ span {
 }
 
 
-.assignments {
+.projects {
     background: var(--second-bg-color);
 }
 
-.assignments h2  {
+.projects h2  {
     margin-bottom: 1rem;
     margin-top: -1rem;
 }
 
 .assignment-container   {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     align-items: center;
     gap: 1.5rem;
 }
@@ -381,7 +381,7 @@ span {
     padding-bottom: 7rem;
   }
 
-  .assignment {
+  .projects {
     padding-bottom: 7rem;
   }
 
@@ -450,7 +450,7 @@ span {
         margin-bottom: 3rem;
     }
 
-    .assignment h2 {
+    .projects h2 {
         margin-bottom: 3rem;
     }
 
